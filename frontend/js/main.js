@@ -1,6 +1,10 @@
-// frontend/js/main.js
+// Set this to your Render/Production backend URL after deployment
+const PROD_API_URL = "https://bluemarket-backend.onrender.com/api"; 
+const LOCAL_API_URL = "http://127.0.0.1:5000/api";
 
-const API_BASE_URL = "http://127.0.0.1:5000/api";
+const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? LOCAL_API_URL
+    : PROD_API_URL;
 let allProducts = [];
 
 // --- Fetch products from backend ---

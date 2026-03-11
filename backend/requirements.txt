@@ -3,3 +3,5 @@ flask-cors
 cassandra-driver
 bcrypt
 pyjwt
+gunicorn
+python-dotenv
