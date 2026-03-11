@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Secure Cart | Blue Market</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --card-bg: rgba(31, 40, 51, 0.6);
+      --border-soft: rgba(102, 252, 241, 0.1);
+    }
+
+    body {
+      background-color: var(--bg-darker);
+    }
+
+    .cart-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    /* Cart Items Section */
+    .cart-section {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 25px;
+      border: 1px solid var(--border-soft);
+      backdrop-filter: blur(10px);
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-soft);
+      margin-bottom: 20px;
+    }
+
+    .cart-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-white);
+    }
+
+    .item-card {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      margin-bottom: 15px;
+      background: rgba(11, 12, 16, 0.4);
+      border-radius: 16px;
+      border: 1px solid transparent;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .item-card:hover {
+      border-color: var(--primary-dark);
+      transform: translateX(5px);
+    }
+
+    .item-img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid var(--border-soft);
+    }
+
+    .item-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .item-main {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .item-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-white);
+      margin: 0;
+    }
+
+    .item-category {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--primary-dark);
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    .item-pricing {
+      text-align: right;
+    }
+
+    .unit-price {
+      font-size: 0.9rem;
+      opacity: 0.6;
+      margin-bottom: 5px;
+    }
+
+    .total-item-price {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    /* Controls */
+    .item-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      background: var(--bg-darker);
+      border-radius: 10px;
+      padding: 4px;
+      border: 1px solid var(--border-soft);
+    }
+
+    .qty-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      color: var(--primary);
+      font-size: 1.2rem;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    .qty-btn:hover {
+      background: rgba(102, 252, 241, 0.1);
+    }
+
+    .qty-val {
+      width: 40px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--text-white);
+    }
+
+    .remove-action {
+      color: var(--danger);
+      background: transparent;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px;
+      border-radius: 8px;
+    }
+
+    .remove-action:hover {
+      background: rgba(255, 77, 77, 0.1);
+    }
+
+    /* Summary Sidebar */
+    .summary-card {
+      background: var(--card-bg);
+      border-radius: 24px;
+      padding: 30px;
+      border: 1px solid var(--border-soft);
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+      backdrop-filter: blur(15px);
+    }
+
+    .summary-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin: 0 0 25px 0;
+      color: var(--text-white);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+
+    .summary-total {
+      margin-top: 25px;
+      padding-top: 25px;
+      border-top: 1px solid var(--border-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .total-label {
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--text-white);
+    }
+
+    .total-amount {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .checkout-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: var(--bg-darker);
+      border: none;
+      padding: 20px;
+      border-radius: 16px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 30px;
+      box-shadow: 0 10px 20px rgba(102, 252, 241, 0.2);
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .checkout-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(102, 252, 241, 0.4);
+      filter: brightness(1.1);
+    }
+
+    /* Empty State */
+    .empty-cart {
+      text-align: center;
+      padding: 100px 40px;
+      background: var(--card-bg);
+      border-radius: 30px;
+      border: 1px dashed var(--border-soft);
+    }
+
+    .empty-icon {
+      font-size: 5rem;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    /* Responsive */
+    @media (max-width: 1000px) {
+      .cart-wrapper {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-card {
+        position: static;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .item-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .item-main {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .item-pricing {
+        text-align: center;
+      }
+
+      .item-actions {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="logo" onclick="window.location.href='index.html'">BLUE MARKET</div>
+    <div class="nav-right">
+      <button class="nav-btn" onclick="window.location.href='index.html'">Exchange</button>
+      <button class="nav-btn" onclick="window.location.href='profile.html'">Account</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div id="cartUiContainer">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    /**
+     * Logic for grouped cart items with quantity management
+     */
+    function getGroupedCart() {
+      const flatCart = JSON.parse(localStorage.getItem("cart")) || [];
+      const grouped = {};
+
+      flatCart.forEach(item => {
+        if (!item || !item.id) return;
+        if (grouped[item.id]) {
+          grouped[item.id].quantity += 1;
+        } else {
+          grouped[item.id] = { ...item, quantity: 1 };
+        }
+      });
+
+      return Object.values(grouped);
+    }
+
+    function saveGroupedCart(groupedItems) {
+      const flat = [];
+      groupedItems.forEach(item => {
+        for (let i = 0; i < item.quantity; i++) {
+          const { quantity, ...product } = item;
+          flat.push(product);
+        }
+      });
+      localStorage.setItem("cart", JSON.stringify(flat));
+      renderCart();
+      if (typeof updateCartBadge === 'function') updateCartBadge();
+    }
+
+    function changeQty(productId, delta) {
+      const items = getGroupedCart();
+      const item = items.find(i => i.id === productId);
+      if (item) {
+        item.quantity += delta;
+        if (item.quantity < 1) {
+          removeFromCartById(productId);
+          return;
+        }
+        saveGroupedCart(items);
+      }
+    }
+
+    function removeFromCartById(productId) {
+      const items = getGroupedCart().filter(i => i.id !== productId);
+      saveGroupedCart(items);
+    }
+
+    function renderCart() {
+      const container = document.getElementById("cartUiContainer");
+      const items = getGroupedCart();
+
+      if (items.length === 0) {
+        container.innerHTML = `
+          <div class="empty-cart">
+            <span class="empty-icon">🛒</span>
+            <h2 style="color:var(--text-white); font-size:2rem;">Your market cart is empty</h2>
+            <p style="margin-bottom:30px; opacity:0.7;">Secure your tactical assets and return here to complete the exchange.</p>
+            <button class="btn-add" style="max-width:300px; margin:0 auto;" onclick="window.location.href='index.html'">Browse Exchange</button>
+          </div>
+        `;
+        return;
+      }
+
+      let subtotal = 0;
+      const deliveryFee = 500;
+      const taxes = 0.16; // 16% VAT example
+
+      const itemsHtml = items.map(item => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
+        return `
+          <div class="item-card">
+            <img src="${item.image_url}" alt="${item.name}" class="item-img" onerror="this.src='https://via.placeholder.com/120x120?text=Asset'">
+            <div class="item-details">
+              <div class="item-main">
+                <div>
+                  <p class="item-category">${item.category}</p>
+                  <h3 class="item-name">${item.name}</h3>
+                </div>
+                <div class="item-pricing">
+                  <div class="unit-price">KSh ${item.price.toLocaleString()} unit</div>
+                  <div class="total-item-price">KSh ${itemTotal.toLocaleString()}</div>
+                </div>
+              </div>
+              <div class="item-actions">
+                <div class="qty-controls">
+                  <button class="qty-btn" onclick="changeQty('${item.id}', -1)">−</button>
+                  <span class="qty-val">${item.quantity}</span>
+                  <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
+                </div>
+                <button class="remove-action" onclick="removeFromCartById('${item.id}')">
+                   🗑️ Remove Asset
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const taxAmount = subtotal * taxes;
+      const discount = subtotal > 5000000 ? subtotal * 0.05 : 0; // 5% bulk discount
+      const grandTotal = subtotal + deliveryFee + taxAmount - discount;
+
+      container.innerHTML = `
+        <h1 style="color:var(--text-white); margin-bottom:10px;">Tactical Secure Checkout</h1>
+        <p style="opacity:0.6; margin-bottom:30px;">Review your secured assets before proceeding to encrypted payment.</p>
+        
+        <div class="cart-wrapper">
+          <div>
+            <div class="cart-section">
+              <div class="cart-header">
+                <span class="cart-title">Encrypted Cart (${items.length} items)</span>
+                <span style="color:var(--primary); font-weight:700;">Subtotal: KSh ${subtotal.toLocaleString()}</span>
+              </div>
+              <div id="cartItemsList">
+                ${itemsHtml}
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-card">
+            <h3 class="summary-title">Order Summary</h3>
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span style="color:var(--text-white);">KSh ${subtotal.toLocaleString()}</span>
+            </div>
+            <div class="summary-row">
+              <span>Delivery Fee</span>
+              <span style="color:var(--text-white);">KSh ${deliveryFee.toLocaleString()}</span>
+            </div>
+            <div class="summary-row">
+              <span>VAT (16%)</span>
+              <span style="color:var(--text-white);">KSh ${taxAmount.toLocaleString()}</span>
+            </div>
+            ${discount > 0 ? `
+            <div class="summary-row" style="color:var(--primary);">
+              <span>Bulk Discount</span>
+              <span>- KSh ${discount.toLocaleString()}</span>
+            </div>` : ''}
+            
+            <div class="summary-total">
+              <span class="total-label">Grand Total</span>
+              <div style="text-align:right;">
+                <span class="total-amount">KSh ${grandTotal.toLocaleString()}</span>
+                <p style="font-size:0.7rem; opacity:0.5; margin:5px 0 0 0;">(Prices include 16% VAT)</p>
+              </div>
+            </div>
+
+            <button class="checkout-btn" onclick="window.location.href='checkout.html'">
+              Complete Secure Checkout
+            </button>
+            <div style="margin-top:20px; text-align:center; font-size:0.8rem; opacity:0.6; display:flex; flex-direction:column; gap:8px;">
+                          </div>
+          </div>
+        </div>
+      `;
+    }
+
+    document.addEventListener("DOMContentLoaded", renderCart);
+  </script>
+</body>
+
+</html>
+ml>

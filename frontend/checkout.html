@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout | Blue Market</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .checkout-flow {
+            max-width: 800px;
+            margin: 40px auto;
+        }
+
+        .steps-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .steps-indicator::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(102, 252, 241, 0.1);
+            z-index: 1;
+        }
+
+        .step-dot {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-dark);
+            border: 2px solid rgba(102, 252, 241, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            font-weight: 700;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .step-dot.active {
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 0 15px rgba(102, 252, 241, 0.4);
+        }
+
+        .step-dot.completed {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--bg-darker);
+        }
+
+        .checkout-card {
+            background: var(--bg-dark);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-darker);
+            border: 1px solid rgba(102, 252, 241, 0.2);
+            border-radius: 8px;
+            color: var(--text-white);
+            outline: none;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .payment-option:hover {
+            background: rgba(102, 252, 241, 0.05);
+        }
+
+        .payment-option.selected {
+            border-color: var(--primary);
+            background: rgba(102, 252, 241, 0.08);
+        }
+
+        .mpesa-logo {
+            color: #4CAF50;
+            font-weight: 800;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo" onclick="window.location.href='index.html'">BLUE MARKET</div>
+        <div class="nav-right">
+            <button class="nav-btn" onclick="window.location.href='cart.html'">Back to Cart</button>
+        </div>
+    </nav>
+
+    <div class="container" style="max-width: 900px;">
+        <div class="steps-indicator">
+            <div class="step-dot active" id="dot-1">1</div>
+            <div class="step-dot" id="dot-2">2</div>
+            <div class="step-dot" id="dot-3">3</div>
+        </div>
+
+        <div class="checkout-card">
+            <!-- Step 1: Shipping -->
+            <div id="step-1" class="step-content active">
+                <h2 style="color:var(--text-white); margin-top:0;">Shipping Protocol</h2>
+                <div class="input-group">
+                    <label>Full Legal Name</label>
+                    <input type="text" id="ship-name" placeholder="E.g. John Kamau">
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                    <div class="input-group">
+                        <label>City / Region</label>
+                        <select id="ship-city">
+                            <option value="nairobi">Nairobi (KSh 100 delivery)</option>
+                            <option value="mombasa">Mombasa (KSh 250 delivery)</option>
+                            <option value="kisumu">Kisumu (KSh 250 delivery)</option>
+                            <option value="nakuru">Nakuru (KSh 250 delivery)</option>
+                            <option value="other">Other (KSh 350 delivery)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Area / Estate</label>
+                        <input type="text" id="ship-area" placeholder="E.g. Westlands">
+                    </div>
+                </div>
+                <button class="btn-add" onclick="goToStep(2)">Next: Payment Method</button>
+            </div>
+
+            <!-- Step 2: Payment -->
+            <div id="step-2" class="step-content">
+                <h2 style="color:var(--text-white); margin-top:0;">Secure Payment</h2>
+
+                <div class="payment-option selected" id="opt-mpesa" onclick="selectPayment('mpesa')">
+                    <div style="font-size:1.5rem">📱</div>
+                    <div>
+                        <div class="mpesa-logo">M-PESA STK Push</div>
+                        <div style="font-size:0.8rem; opacity:0.6;">Direct payment on your phone</div>
+                    </div>
+                </div>
+
+                <div id="mpesa-details" style="padding: 0 10px 20px 10px;">
+                    <div class="input-group">
+                        <label>M-Pesa Number (Kenyan Format)</label>
+                        <input type="tel" id="mpesa-phone" placeholder="0712345678" maxlength="10">
+                        <p id="phone-error"
+                            style="color:var(--danger); font-size:0.75rem; margin-top:5px; display:none;">Invalid
+                            format. Use 07... or 01...</p>
+                    </div>
+                </div>
+
+                <div class="payment-option" id="opt-bank" onclick="selectPayment('bank')">
+                    <div style="font-size:1.5rem">🏦</div>
+                    <div>
+                        <div style="font-weight:700;">Bank Transfer (EFT)</div>
+                        <div style="font-size:0.8rem; opacity:0.6;">Manual confirmation required</div>
+                    </div>
+                </div>
+
+                <div class="payment-option" id="opt-btc" onclick="selectPayment('btc')">
+                    <div style="font-size:1.5rem">₿</div>
+                    <div>
+                        <div style="font-weight:700;">Bitcoin</div>
+                        <div style="font-size:0.8rem; opacity:0.6;">Secure crypto transaction</div>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <button class="nav-btn" onclick="goToStep(1)">Back</button>
+                    <button class="btn-add" onclick="goToStep(3)">Next: Review Order</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Review -->
+            <div id="step-3" class="step-content">
+                <h2 style="color:var(--text-white); margin-top:0;">Final Confirmation</h2>
+                <div style="background:var(--bg-darker); padding:20px; border-radius:12px; margin-bottom:20px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <span>Items Subtotal</span>
+                        <span id="review-subtotal">KSh 0.00</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <span>Delivery Fee</span>
+                        <span id="review-delivery">KSh 0.00</span>
+                    </div>
+                    <div
+                        style="display:flex; justify-content:space-between; border-top:1px solid rgba(255,255,255,0.05); padding-top:10px; margin-top:10px; font-weight:800; font-size:1.2rem;">
+                        <span>TOTAL</span>
+                        <span id="review-total" style="color:var(--primary);">KSh 0.00</span>
+                    </div>
+                </div>
+
+                <div id="payment-specific-instructions"></div>
+
+                <div style="display:flex; gap:10px;">
+                    <button class="nav-btn" onclick="goToStep(2)">Back</button>
+                    <button id="finalSubmitBtn" class="btn-add" onclick="processOrder()">Initialize Payment & Confirm
+                        Order</button>
+                </div>
+
+                <div id="processing-msg" style="display:none; text-align:center; margin-top:20px;">
+                    <div class="skeleton" style="height:4px; width:100px; margin: 0 auto 10px;"></div>
+                    <p id="status-text">Synchronizing with payment gateway...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        let currentStep = 1;
+        let selectedPaymentMethod = 'mpesa';
+        let totalWithFees = 0;
+
+        function goToStep(step) {
+            // Basic validation for Step 1
+            if (step === 2 && !document.getElementById('ship-name').value) {
+                alert("Identification required: Please enter your name.");
+                return;
+            }
+
+            // Step 2 validation
+            if (step === 3 && selectedPaymentMethod === 'mpesa') {
+                const phone = document.getElementById('mpesa-phone').value;
+                if (!/^(07|01)\d{8}$/.test(phone)) {
+                    document.getElementById('phone-error').style.display = 'block';
+                    return;
+                }
+            }
+
+            currentStep = step;
+            document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step-${step}`).classList.add('active');
+
+            // Update dots
+            document.querySelectorAll('.step-dot').forEach((dot, idx) => {
+                dot.classList.remove('active', 'completed');
+                if (idx + 1 < step) dot.classList.add('completed');
+                if (idx + 1 === step) dot.classList.add('active');
+            });
+
+            if (step === 3) updateReview();
+        }
+
+        function selectPayment(method) {
+            selectedPaymentMethod = method;
+            document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
+            document.getElementById(`opt-${method}`).classList.add('selected');
+            document.getElementById('mpesa-details').style.display = (method === 'mpesa') ? 'block' : 'none';
+            document.getElementById('phone-error').style.display = 'none';
+        }
+
+        function updateReview() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const subTotal = cart.reduce((sum, p) => sum + (p.price || 0), 0);
+            const city = document.getElementById('ship-city').value;
+            let delivery = city === 'nairobi' ? 100 : 250;
+            if (city === 'other') delivery = 350;
+
+            totalWithFees = subTotal + delivery;
+
+            document.getElementById('review-subtotal').innerText = `KSh ${subTotal.toLocaleString()}`;
+            document.getElementById('review-delivery').innerText = `KSh ${delivery.toLocaleString()}`;
+            document.getElementById('review-total').innerText = `KSh ${totalWithFees.toLocaleString()}`;
+
+            let instructions = "";
+            if (selectedPaymentMethod === 'bank') {
+                instructions = `
+              <div style="background:rgba(102, 252, 241, 0.05); padding:15px; border-radius:10px; margin-bottom:20px; font-size:0.9rem;">
+                  <strong>Bank Transfer Instructions:</strong><br>
+                  Blue Bank Ltd | Acc: 5544 3322 1100<br>
+                  Branch: Corporate HQ | Reference: [ORDER_ID]
+              </div>`;
+            } else if (selectedPaymentMethod === 'btc') {
+                instructions = `
+              <div style="background:rgba(102, 252, 241, 0.05); padding:15px; border-radius:10px; margin-bottom:20px; font-size:0.9rem; text-align:center;">
+                  <strong>BTC Wallet Address:</strong><br>
+                  <code style="word-break:break-all; font-size:0.75rem; color:var(--primary);">bc1qxy2kgdy6jrsqz7v6n3FM_BLUE_MARKET_WALLET</code><br>
+                  <div style="background:white; width:100px; height:100px; margin:10px auto; padding:5px;">QR Placeholder</div>
+                  <small style="color:var(--danger)">15:00 window to complete transfer</small>
+              </div>`;
+            }
+            document.getElementById('payment-specific-instructions').innerHTML = instructions;
+        }
+
+        async function processOrder() {
+            const user_id = localStorage.getItem("user_id");
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const btn = document.getElementById('finalSubmitBtn');
+            const msg = document.getElementById('processing-msg');
+            const statusText = document.getElementById('status-text');
+
+            if (btn.disabled) return; // Prevent double click
+            btn.disabled = true;
+            btn.style.opacity = '0.5';
+            msg.style.display = 'block';
+
+            const shippingData = {
+                name: document.getElementById('ship-name').value,
+                city: document.getElementById('ship-city').value,
+                area: document.getElementById('ship-area').value,
+                payment_phone: (selectedPaymentMethod === 'mpesa') ? document.getElementById('mpesa-phone').value : null
+            };
+
+            statusText.innerText = selectedPaymentMethod === 'mpesa' ? "Waiting for M-Pesa STK Push response..." : "Registering transaction on blockchain...";
+
+            try {
+                const res = await fetch(`http://localhost:5000/api/orders/checkout`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        user_id,
+                        items: cart.map(p => p.id),
+                        total: totalWithFees,
+                        shipping_info: shippingData,
+                        payment_method: selectedPaymentMethod
+                    })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    statusText.innerText = "Payment Verified. Clearing inventory...";
+                    setTimeout(() => {
+                        alert(data.message);
+                        localStorage.removeItem("cart");
+                        window.location.href = "index.html";
+                    }, 1500);
+                } else {
+                    alert(data.error || "System crash. Try again.");
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                    msg.style.display = 'none';
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Connection lost. Secure channel collapsed.");
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                msg.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>

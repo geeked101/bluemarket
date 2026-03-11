@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Black Market</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .login-container {
+      background: #1F2833;
+      padding: 40px;
+      border-radius: 12px;
+      max-width: 400px;
+      margin: 100px auto;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .login-container h2 {
+      text-align: center;
+      color: #66FCF1;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      background: #0B0C10;
+      border: 1px solid #45A29E;
+      color: white;
+      border-radius: 6px;
+      box-sizing: border-box;
+      outline: none;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background: #45A29E;
+      color: #0B0C10;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .login-btn:hover {
+      background: #66FCF1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <h2 id="formTitle">Black Market Login</h2>
+
+    <!-- Login Form -->
+    <form id="loginForm">
+      <div class="form-group">
+        <input type="email" id="email" placeholder="Email Address" required />
+      </div>
+      <div class="form-group">
+        <input type="password" id="password" placeholder="Password" required />
+      </div>
+      <button type="submit" class="login-btn">Secure Login</button>
+    </form>
+
+    <!-- Register Form (Hidden by default) -->
+    <form id="registerForm" style="display: none;">
+      <div class="form-group">
+        <input type="text" id="reg-username" placeholder="Username" required />
+      </div>
+      <div class="form-group">
+        <input type="email" id="reg-email" placeholder="Email Address" required />
+      </div>
+      <div class="form-group">
+        <input type="password" id="reg-password" placeholder="Password" required />
+      </div>
+      <button type="submit" class="login-btn">Create Account</button>
+    </form>
+
+    <p id="authStatus" style="text-align: center; color: #ff4d4d; margin-top: 20px;"></p>
+
+    <div style="text-align: center; margin-top: 20px; font-size: 0.9rem;">
+      <span id="toggleText">Don't have an account?</span>
+      <a href="#" id="toggleAuth" style="color: #66FCF1; text-decoration: none; margin-left: 5px;">Register here</a>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>

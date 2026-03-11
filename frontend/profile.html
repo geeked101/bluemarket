@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account - Black Market</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <h2 class="logo" onclick="window.location.href='index.html'" style="cursor:pointer;">Black Market</h2>
+        <div class="nav-right">
+            <button onclick="window.location.href='index.html'">Store</button>
+            <button onclick="window.location.href='cart.html'">Cart</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div
+            style="background: #1F2833; padding: 40px; border-radius: 12px; max-width: 600px; margin: 40px auto; text-align: center;">
+            <h2 style="color: #66FCF1;">Your Account</h2>
+            <div style="margin: 30px 0;">
+                <p style="color: #45A29E; font-size: 0.9rem; text-transform: uppercase;">Logged in as</p>
+                <p id="user-email-display" style="font-size: 1.2rem; word-break: break-all; color: #66FCF1;"></p>
+                <p id="user-id-display" style="font-size: 0.8rem; color: #45A29E; margin-top: 10px;"></p>
+            </div>
+            <button onclick="logout()"
+                style="background: #ff4d4d; color: white; border: none; padding: 12px 30px; border-radius: 6px; cursor: pointer; font-weight: bold;">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        const userId = localStorage.getItem("user_id");
+        const userEmail = localStorage.getItem("user_email");
+        if (!userId) {
+            alert("Please login first");
+            window.location.href = "login.html";
+        }
+
+        document.getElementById("user-id-display").innerText = "ID: " + userId;
+        document.getElementById("user-email-display").innerText = userEmail || "No email found";
+
+        function logout() {
+            localStorage.removeItem("user_id");
+            localStorage.removeItem("user_email");
+            localStorage.removeItem("cart");
+            window.location.href = "login.html";
+        }
+    </script>
+
+</body>
+
+</html>

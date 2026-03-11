@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blue Market | Premium Digital Exchange</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="logo" onclick="window.location.href='index.html'">BLUE MARKET</div>
+    <div class="nav-right">
+      <button class="nav-btn" onclick="goToCart()">
+        Cart <span id="cartCountBadge"
+          style="display:none; background: var(--danger); color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.7rem; margin-left: 5px;">0</span>
+      </button>
+      <button class="nav-btn" onclick="goToProfile()">Account</button>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1>The Future of Digital Trade</h1>
+    <p>Secure, anonymous, and lightning fast. Experience the most trusted marketplace for premium digital assets and
+      specialized gear.</p>
+  </header>
+
+  <main class="container">
+    <div class="controls-bar">
+      <div class="search-wrapper">
+        <input type="text" id="searchInput" placeholder="Search for items, categories, or descriptions...">
+      </div>
+
+      <div class="filter-group">
+        <select id="categoryFilter">
+          <option value="all">Categories: All</option>
+          <option value="Vehicles">Vehicles</option>
+          <option value="Tactical">Tactical</option>
+          <option value="Gear">Gear</option>
+        </select>
+
+        <select id="sortOrder">
+          <option value="newest">Sort by: Newest</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="popular">Most Popular</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Skeleton Loaders -->
+    <div id="skeleton-grid" class="product-grid">
+      <div class="card">
+        <div class="skeleton" style="height:220px"></div>
+        <div class="card-content">
+          <div class="skeleton" style="height:20px; width:40%; margin-bottom:10px"></div>
+          <div class="skeleton" style="height:30px; width:80%"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="skeleton" style="height:220px"></div>
+        <div class="card-content">
+          <div class="skeleton" style="height:20px; width:40%; margin-bottom:10px"></div>
+          <div class="skeleton" style="height:30px; width:80%"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="skeleton" style="height:220px"></div>
+        <div class="card-content">
+          <div class="skeleton" style="height:20px; width:40%; margin-bottom:10px"></div>
+          <div class="skeleton" style="height:30px; width:80%"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="skeleton" style="height:220px"></div>
+        <div class="card-content">
+          <div class="skeleton" style="height:20px; width:40%; margin-bottom:10px"></div>
+          <div class="skeleton" style="height:30px; width:80%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="products" class="product-grid" style="display: none;"></div>
+
+    <section class="about-box">
+      <h2>Verified Marketplace Protocol</h2>
+      <p>Every item listed on Blue Market undergoes a rigorous verification process. Our multi-sig escrow system ensures
+        that your funds are only released when you are satisfied with your purchase. Join over 50,000 satisfied elite
+        traders today.</p>
+    </section>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>

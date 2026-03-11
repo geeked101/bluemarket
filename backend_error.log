@@ -1,0 +1,3 @@
+Error connecting to Cassandra: ('Unable to connect to any servers', {'127.0.0.1:9042': ConnectionRefusedError(10061, "Tried connecting to [('127.0.0.1', 9042)]. Last error: No connection could be made because the target machine actively refused it")})
+Error connecting to Cassandra: ('Unable to connect to any servers', {'127.0.0.1:9042': ConnectionRefusedError(10061, "Tried connecting to [('127.0.0.1', 9042)]. Last error: No connection could be made because the target machine actively refused it")})
+Error connecting to Cassandra: ('Unable to connect to any servers', {'127.0.0.1:9042': ConnectionShutdown('Connection to 127.0.0.1:9042 was closed')})
