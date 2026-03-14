@@ -6,7 +6,8 @@ from backend.routes.auth import auth_bp
 from backend.routes.orders import orders_bp
 
 app = Flask(__name__)
-CORS(app)
+# Enable CORS for all domains so Netlify can fetch without block
+CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
 # Register Blueprints
 app.register_blueprint(products_bp, url_prefix="/api")
