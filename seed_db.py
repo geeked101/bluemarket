@@ -5,8 +5,11 @@ from decimal import Decimal
 
 def seed():
     try:
-        cluster = Cluster(['127.0.0.1'], port=9042)
-        session = cluster.connect('ecommerce')
+        from backend.db import session
+        
+        if not session:
+            print("Failed to get DB session")
+            return
 
         products = [
             {
@@ -95,7 +98,6 @@ def seed():
             ))
 
         print(f"Successfully seeded {len(products)} products into 'ecommerce.products'!")
-        cluster.shutdown()
 
     except Exception as e:
         print(f"Seeding failed: {e}")
