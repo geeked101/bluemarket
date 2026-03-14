@@ -3,9 +3,6 @@
 .env.*
 
 # Secrets / Credentials
-*.zip
-secure-connect-*.zip
-
 # Python
 __pycache__/
 *.py[cod]
